@@ -25,3 +25,4 @@ def loadSNPs(filename):
         
 
     return (X, sample_names, SNP_locations, SNP_names)
+
