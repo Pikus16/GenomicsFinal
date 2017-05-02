@@ -14,3 +14,13 @@ def load_data():
     for i in nams:
         data.append(loadSNPs(dat_dir + i))
     return data
+
+## Returns dictionary of sample names as keys and tissue names as values
+#def get_samples_tiss():
+    #nams = get_names()
+   # dic = {}
+    #for i in nams:
+     #   X, samples, locs, snps = loadSNPs(dat_dir + i)
+      #  for n in samples:
+            
+        
