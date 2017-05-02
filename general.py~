@@ -9,7 +9,6 @@ def loadSNPs(filename):
     line = line.strip()
     items = line.split('\t')
     sample_names = items[4:]
-
     X = []
     SNP_locations = []
     SNP_names = []
@@ -22,6 +21,4 @@ def loadSNPs(filename):
         X.append(t)
         SNP_locations.append(float(items[1]))
         SNP_names.append(items[3])
-        
-
     return (X, sample_names, SNP_locations, SNP_names)
