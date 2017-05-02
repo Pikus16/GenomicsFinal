@@ -1,4 +1,5 @@
 import numpy as np
+import random
 import gzip
 
 
@@ -25,3 +26,25 @@ def loadSNPs(filename):
         
 
     return (X, sample_names, SNP_locations, SNP_names)
+
+def split_test(infile, trainfile, testfile):
+    fin = open(infile, 'r')
+
+    ftrain = open(trainfile, 'w')
+    ftest = open(testfile, 'w')
+
+    portion = 0.1
+
+
+    header = fin.readline()
+    ftrain.write(header)
+    ftest.write(header)
+
+
+    for line in fin:
+        r = random.random()
+
+        if r < portion:
+            ftest.write(line)
+        else:
+            ftrain.write(line)
