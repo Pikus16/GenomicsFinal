@@ -82,7 +82,7 @@ def plot_tissue_pca(d = 10):
             else:
                 plt.scatter(first[n][0], first[n][1], color = 'green')
                 green.append(n)
-    plt.title(tissues.keys()[i])
+    plt.title(tissues.keys()[s])
     plt.savefig(str(tissues.keys()[s]) + '.png')
     plt.close(s)
     for i in range(0, 33):
