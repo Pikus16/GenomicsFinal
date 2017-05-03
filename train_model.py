@@ -49,7 +49,7 @@ def solveF(Y, S):
     return F
 
 def solveS(Yt, F):
-    d = F.shape[1]
+    d = F[F.keys()[0]].shape[1]
 
     S = {}
     
