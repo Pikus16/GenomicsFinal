@@ -15,10 +15,10 @@ def train(Y, Yt, d = 10, h = 5, max_iter = 100):
 
     F = {}
     for i in Y:
-        F[i] = np.random.randn(d,1)
+        F[i] = np.random.randn(d,h)
 
     for ep in range(max_iter):
-        print('ep ' + str(ep))
+        print('ep ' + str(ep) + '\tSSD = ' + str(ss_err(Y, F, S)[0]))
         nextF = solveF(Y, S)
         F = nextF
 
