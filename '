@@ -1,0 +1,21 @@
+import numpy as np
+from read_data import *
+from train_model import * 
+
+def BIC_eval(Y, Yt, F, S, d = 10, h = 5):
+    n = len(Yt)
+    k = (n-1) * h
+    sigma = calc_err(Y)
+    mle = (1/sigma)**2 * ss_err(Y, F, S)
+    for i in Y:
+        for u in Y[i]:
+            mle += np.log(2 * np.pi())
+    return (np.log(n) * k + mle)
+
+def centroids(Y):
+    ss = 0
+    for i in Y:
+        for u in Y[i]:
+            ss += (sum(Y[i][u])**2)
+    return ss
+    

@@ -3,8 +3,8 @@ from numpy import matmul as mx
 import pca
 from input_output import *
 import sys
-
-
+from evaluate import *
+import os
 
 def train(Y, Yt, d = 10, h = 5, max_iter = 100):
     #get Y,Yt from Benny's code
@@ -163,19 +163,36 @@ def main():
     print('got data')
     Z, Zt = randomize_data(Y, Yt)
 
+    '''h = 5
+    F, S = train(Y, Yt, 10, h)
+    FZ, SZ = train(Z, Zt, 10, h)
+
+    pwrite(F, S, sys.argv[2]+'total_model_10_'+str(h))
+    pwrite(FZ, SZ, sys.argv[2]+'total_randomized_10_'+str(h))
+
+    F_basic, S_basic = train_basic(Y, Yt, 10, h)
+    FZ_basic, SZ_basic = train_basic(Z, Zt, 10, h)
+
+    pwrite(F_basic, S_basic, sys.argv[2]+'basic_model_10_'+str(h))
+    pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_'+str(h))'''
+
     
-    F, S = train(Y, Yt, 10, 5)
-    FZ, SZ = train(Z, Zt, 10, 5)
+    x = range(15,30)
+    for h in x:
+        try:
+            F, S = train(Y, Yt, 10, h)
+            FZ, SZ = train(Z, Zt, 10, h)
 
-    pwrite(F, S, sys.argv[2]+'total_model_10_5')
-    pwrite(FZ, SZ, sys.argv[2]+'total_randomized_10_5')
+            pwrite(F, S, sys.argv[2]+'total_model/total_model_10_' + str(h))
+            pwrite(FZ, SZ, sys.argv[2]+'total_randomized/total_randomized_10_' + str(h))
 
-    F_basic, S_basic = train_basic(Y, Yt, 10, 5)
-    FZ_basic, SZ_basic = train_basic(Z, Zt, 10, 5)
+            F_basic, S_basic = train_basic(Y, Yt, 10, h)
+            FZ_basic, SZ_basic = train_basic(Z, Zt, 10, h)
 
-    pwrite(F_basic, S_basic, sys.argv[2]+'basic_model_10_5')
-    pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_5')
+            pwrite(F_basic, S_basic, sys.argv[2]+'basic_model/basic_model_10_'+str(h))
+            pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized/basic_randomized_10_'+str(h)) 
+        except:
+            print(h)
     
-
 if __name__ == '__main__':
     main()
