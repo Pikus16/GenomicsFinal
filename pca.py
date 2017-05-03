@@ -3,12 +3,18 @@ from sklearn import decomposition
 import numpy as np
 from read_data import *
 from general import *
+import os
+from input_output import *
 
 def run_pca(d = 10): 
-    #nams = get_names()
-    #tissues = {}
-    tissues = get_tissues(d)
-    all_samples = {}
+    try:
+        y, yt = yread(tiss_nam)
+        return y, yt
+    except:
+        #nams = get_names()
+        #tissues = {}
+        tissues = get_tissues(d)
+        all_samples = {}
     #for i in nams:
         #exp, samples_nam, locs, snps = loadSNPs(dat_dir + i)
         #exp = np.asarray(exp)
@@ -19,22 +25,24 @@ def run_pca(d = 10):
           #      all_samples[n].append(i)
            # else:
             #    all_samples[n] = [i]
-    for n in tissues.keys():
-        for j in tissues[n].keys():
-            temp = {}
-            temp[n] = tissues[n][j]
-            if (all_samples.has_key(j)):
-                all_samples[j][n] = temp.values()
-            else:
-                all_samples[j] = temp
-    return tissues, all_samples
+        for n in tissues.keys():
+            for j in tissues[n].keys():
+                temp = {}
+                temp[n] = tissues[n][j]
+                if (all_samples.has_key(j)):
+                    all_samples[j][n] = temp.values()
+                else:
+                    all_samples[j] = temp
+        ywrite(tissues, all_samples, tiss_nam)
+        return tissues, all_samples
 
+tiss_nam = 'dat'
 def pca_tiss(X, samples, d = 10):
     pca = decomposition.PCA(n_components=d)
     pca.fit(X)
     dic = {}
     for j in range(0,pca.components_.shape[1]):
-        dic[samples[j]] = np.reshape(pca.components_[:,j],(d,1))
+        dic[samples[j]] = pca.components_[:,j]
     return dic
 
 import matplotlib

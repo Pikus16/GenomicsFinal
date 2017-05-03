@@ -13,7 +13,7 @@ def ywrite(y, yt, filename):
     pickle.dump(y, open((filename + '.y.pickle'), "wb" ) )
     pickle.dump(yt, open((filename + '.yt.pickle'), "wb"))
 
-def pread(filename):
+def yread(filename):
     y = (pickle.load( open((filename + '.y.pickle'), "rb" ) ))
     yt = (pickle.load( open((filename + '.yt.pickle'), "rb" ) ))
     return y,yt
