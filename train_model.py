@@ -185,7 +185,7 @@ def main():
     pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_'+str(h))'''
 
     
-    x = range(0,15)
+    x = range(1,15)
     for h in x:
         try:
             F, S = train(Y, Yt, 10, h)
