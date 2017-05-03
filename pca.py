@@ -42,7 +42,7 @@ def pca_tiss(X, samples, d = 10):
     pca.fit(X)
     dic = {}
     for j in range(0,pca.components_.shape[1]):
-        dic[samples[j]] = pca.components_[:,j]
+        dic[samples[j]] = np.reshape(pca.components_[:,j],(d,1))
     return dic
 
 import matplotlib
