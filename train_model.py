@@ -39,10 +39,10 @@ def solveF(Y, S):
         Sit = np.concatenate(Sit, axis=1)
         Yit = np.concatenate(Yit, axis=1)
             
-        Si = np.transpose(Sit)
-        Yi = np.transpose(Yit)
+        Si = Sit
+        Yi = Yit
 
-        Fi = mx(mx( Yi, np.transpose(Si)), np.linalg.inv(mt(Si, np.transpose(Si)))) #needs to use matmul i believe
+        Fi = mx(mx( Yi, np.transpose(Si)), np.linalg.inv(mx(Si, np.transpose(Si)))) #needs to use matmul i believe
 
         F[i] = Fi
 
