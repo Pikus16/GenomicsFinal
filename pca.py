@@ -42,7 +42,7 @@ def pca_tiss(X, samples, d = 10):
     pca.fit(X)
     dic = {}
     for j in range(0,pca.components_.shape[1]):
-        dic[samples[j]] = np.reshape(pca.components_[:,j],(d,1))
+        dic[samples[j]] = np.reshape(pca.components_[:,j],(d,1)) 
     return dic
 
 import matplotlib
@@ -51,14 +51,19 @@ import matplotlib.pyplot as plt
 
 
 def get_tissues(d= 10):
-    nams = get_names()
-    tissues = {}
-    all_samples = {}
-    for i in nams:
-        exp, samples_nam, locs, snps = loadSNPs(dat_dir + i)
-        exp = np.asarray(exp)
-        tissues[i] = pca_tiss(exp, samples_nam, d)
-    return tissues
+    try:
+        tissues = read_tiss(tiss_nam)
+        return tissues
+    except:
+        nams = get_names()
+        tissues = {}
+        all_samples = {}
+        for i in nams:
+            exp, samples_nam, locs, snps = loadSNPs(dat_dir + i)
+            exp = np.asarray(exp)
+            tissues[i] = pca_tiss(exp, samples_nam, d)
+        write_tiss(tissues, tiss_nam)
+        return tissues
 
 def plot_tissue_pca(d = 10):
     tissues = get_tissues(d)

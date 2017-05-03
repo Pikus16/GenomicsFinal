@@ -18,4 +18,10 @@ def yread(filename):
     yt = (pickle.load( open((filename + '.yt.pickle'), "rb" ) ))
     return y,yt
 
+def write_tiss(y, filename):
+    pickle.dump(y, open((filename + '.y.pickle'), "wb" ) )
+
+def read_tiss(filename):
+    y = (pickle.load( open((filename + '.y.pickle'), "rb" ) ))
+    return y
 
