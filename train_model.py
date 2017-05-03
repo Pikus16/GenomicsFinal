@@ -130,20 +130,24 @@ def ss_err(Y, F, S, scale = 1.):
     return err
 
 def main():
+    if len(sys.argv) <= 2:
+        print('not enough cmd args')
+        exit()
+        
     Y, Yt = run_pca()
     Z, Zt = randomize_data(Y, Yt)
     
     F, S = train(Y, Yt, 10, 5)
     FZ, SZ = train(Z, Zt, 10, 5)
 
-    pwrite(F, S, 'total_model_10_5')
-    pwrite(FZ, SZ, 'total_randomized_10_5')
+    pwrite(F, S, sys.argv[2]+'total_model_10_5')
+    pwrite(FZ, SZ, sys.argv[2]+'total_randomized_10_5')
 
     F_basic, S_basic = train_basic(Y, Yt, 10, 5)
     FZ_basic, SZ_basic = train_basic(Z, Zt, 10, 5)
 
-    pwrite(F_basic, S_basic, 'basic_model_10_5')
-    pwrite(FZ_basic, SZ_basic, 'basic_randomized_10_5')
+    pwrite(F_basic, S_basic, sys.argv[2]+'basic_model_10_5')
+    pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_5')
     
 
 if __name__ == '__main__':
