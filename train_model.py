@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import matmul as mx
 import pca
-from io import *
+from input_output import *
 
 
 
