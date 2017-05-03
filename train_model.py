@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import matmul as mx
-import 'pca.py'
-import 'io.py'
+import pca
+from io import *
 
 
 
@@ -134,7 +134,7 @@ def main():
         print('not enough cmd args')
         exit()
         
-    Y, Yt = run_pca()
+    Y, Yt = pca.run_pca()
     Z, Zt = randomize_data(Y, Yt)
     
     F, S = train(Y, Yt, 10, 5)
