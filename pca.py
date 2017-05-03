@@ -1,4 +1,4 @@
-from sklearn import svm, decomposition
+from sklearn import decomposition
 import numpy as np
 from read_data import *
 from general import *
@@ -82,7 +82,7 @@ def plot_tissue_pca(d = 10):
             else:
                 plt.scatter(first[n][0], first[n][1], color = 'green')
                 green.append(n)
-    plt.title(tissues.keys()[s])
+    plt.title(str(tissues.keys()[s]))
     plt.savefig(str(tissues.keys()[s]) + '.png')
     plt.close(s)
     for i in range(0, 33):
@@ -100,7 +100,7 @@ def plot_tissue_pca(d = 10):
                     plt.scatter(dims[n][0], dims[n][1], color = 'green')
                 else:
                     plt.scatter(dims[n][0], dims[n][1], color = 'black')
-            plt.title(tissues.keys()[i])
+            plt.title(str(tissues.keys()[i]))
             plt.savefig(str(tissues.keys()[i]) + '.png')
             plt.close(i)
     return 
