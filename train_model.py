@@ -63,12 +63,20 @@ def solveS(Yt, F):
         Isize = 0
 
         for i in Yt[u]:
-            tv = mx(np.transpose(F[i]), F[i])
-            tv = np.linalg.inv(tv)
-            tv = mx(tv, np.transpose(F[i]))
-            tv = mx(tv, Yt[u][i])
-            Su = Su + tv
-            #Su = Su + mx(mx(np.linalg.inv(mx(np.transpose(F[i]), F[i])), np.transpose(F[i])), Yt[u][i])
+            d = F[i].shape[0]
+
+            if h <= d:
+                tv = mx(np.transpose(F[i]), F[i])
+                tv = np.linalg.inv(tv)
+                tv = mx(tv, np.transpose(F[i]))
+                tv = mx(tv, Yt[u][i])
+                Su = Su + tv
+            else:
+                tv = np.transpose(F[i])
+                tv = mx(tv, np.linalg(mx(np.transpose(F[i]), F[i])))
+                tv = mx(tv, Yt[u][i])
+                Su = Su + tv
+                #Su = Su + mx(mx(np.linalg.inv(mx(np.transpose(F[i]), F[i])), np.transpose(F[i])), Yt[u][i])
             Isize += 1
 
         Su = Su / Isize
