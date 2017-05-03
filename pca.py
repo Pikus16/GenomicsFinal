@@ -40,6 +40,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+
 def get_tissues(d= 10):
     nams = get_names()
     tissues = {}
@@ -81,8 +82,10 @@ def plot_tissue_pca(d = 10):
             else:
                 plt.scatter(first[n][0], first[n][1], color = 'green')
                 green.append(n)
-    plt.savefig('first.png')
-    for i in range(0, 20):
+    plt.title(tissues.keys()[i])
+    plt.savefig(str(tissues.keys()[s]) + '.png')
+    plt.close(s)
+    for i in range(0, 33):
         if (i != s):
             plt.figure(i)
             dims = tissues[tissues.keys()[i]]
@@ -99,7 +102,7 @@ def plot_tissue_pca(d = 10):
                     plt.scatter(dims[n][0], dims[n][1], color = 'black')
             plt.title(tissues.keys()[i])
             plt.savefig(str(tissues.keys()[i]) + '.png')
-            plt.closefig(i)
+            plt.close(i)
     return 
     
     
