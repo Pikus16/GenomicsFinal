@@ -14,27 +14,18 @@ def run_pca(d = 10):
         #nams = get_names()
         #tissues = {}
         tissues = get_tissues(d)
-        all_samples = {}
-    #for i in nams:
-        #exp, samples_nam, locs, snps = loadSNPs(dat_dir + i)
-        #exp = np.asarray(exp)
-        #tissues[i] = pca_tiss(exp, samples_nam, d)
-      #############3
-        #for n in samples_nam:
-         #   if (all_samples.has_key(n)):
-          #      all_samples[n].append(i)
-           # else:
-            #    all_samples[n] = [i]
-        for n in tissues.keys():
-            for j in tissues[n].keys():
-                temp = {}
-                temp[n] = tissues[n][j]
-                if (all_samples.has_key(j)):
-                    all_samples[j][n] = temp.values()
-                else:
-                    all_samples[j] = temp
-        ywrite(tissues, all_samples, tiss_nam)
-        return tissues, all_samples
+        Y = tissues
+
+        Yt = {}
+        for i in Y:
+            for u in Y[i]:
+                if u not in Yt:
+                    Yt[u] = {}
+
+                Yt[u][i] = Y[i][u]
+        
+        ywrite(Y, Yt, tiss_nam)
+        return Y, Yt
 
 tiss_nam = 'dat'
 def pca_tiss(X, samples, d = 10):
