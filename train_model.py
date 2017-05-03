@@ -79,6 +79,8 @@ def solveS(Yt, F):
         
 
 def randomize_data(Y, Yt):
+    sigma = calc_std(Y)
+    
     Z = {}
     Zt = {}
     for i in Y:
@@ -89,7 +91,7 @@ def randomize_data(Y, Yt):
                 Zt[u] = {}
 
             d = Y[i][u].shape[0]
-            Z[i][u] = np.random.randn(d,1)
+            Z[i][u] = sigma*np.random.randn(d,1)
             Zt[u][i] = Z[i][u]
 
     return (Z, Zt)
@@ -101,8 +103,12 @@ def train_basic(Y, Yt, d=10, h=5, max_iter = 1000):
     
     for i in Y:
         F[i] = np.random.randn(d, h)
+        F[i] = np.zeros((d, h))
     for u in Yt:
         S[u] = np.random.randn(h, 1)
+        S[u] = np.zeros((h,1))
+
+    return (F,S)
             
     scale = 1.0
     dscale = 0.1
@@ -139,6 +145,14 @@ def ss_err(Y, F, S, scale = 1.):
             err += sum(R**2)
 
     return err
+
+def calc_std(Y):
+    X = []
+    for i in Y:
+        for u in Y[i]:
+            for k in range(len(Y[i][u])):
+                X.append(Y[i][u][k])
+    return np.std(X)
 
 def main():
     if len(sys.argv) <= 2:
