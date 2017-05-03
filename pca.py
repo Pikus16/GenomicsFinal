@@ -58,7 +58,10 @@ def get_tissues(d= 10):
 
 def plot_tissue_pca(d = 10):
     tissues = get_tissues(d)
-    s = 32
+    for j in range(0, len(tissues)):
+        plot_specific(j, tissues)
+
+def plot_specific(s, tissues):
     first = tissues[tissues.keys()[s]]
     x = 0.
     y = 0.
@@ -87,10 +90,18 @@ def plot_tissue_pca(d = 10):
             else:
                 plt.scatter(first[n][0], first[n][1], color = 'green')
                 green.append(n)
-    plt.title(str(tissues.keys()[s]))
-    plt.savefig(str(tissues.keys()[s]) + '.png')
+
+    tle = tissues.keys()[s].split('.')[0]
+    tle = tle[0:(len(tle)-9)]
+    tle_s = tle + "_vs._" + tle
+    plt.title(tle_s)#str(tissues.keys()[s]))
+    if (not os.path.isdir('plots/' + tle + '/' )):
+        os.makedirs('plots/' + tle + '/')
+    plt.xlabel("PCA 1")
+    plt.ylabel("PCA_2")
+    plt.savefig('plots/' + tle + '/' + tle_s + '.png')
     plt.close(s)
-    for i in range(0, 33):
+    for i in range(0, len(tissues)):
         if (i != s):
             plt.figure(i)
             dims = tissues[tissues.keys()[i]]
@@ -105,8 +116,13 @@ def plot_tissue_pca(d = 10):
                     plt.scatter(dims[n][0], dims[n][1], color = 'green')
                 else:
                     plt.scatter(dims[n][0], dims[n][1], color = 'black')
-            plt.title(str(tissues.keys()[i]))
-            plt.savefig(str(tissues.keys()[i]) + '.png')
+            tle_i = tissues.keys()[i].split('.')[0]
+            tle_i = tle_i[0:(len(tle_i)-9)]
+            tle_i = tle_i + "_vs._" + tle
+            plt.title(tle_i)#str(tissues.keys()[i]))
+            plt.xlabel("PCA 1")
+            plt.ylabel("PCA_2")
+            plt.savefig('plots/' + tle + '/' + tle_i + '.png')
             plt.close(i)
     return 
     
