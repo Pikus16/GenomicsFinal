@@ -13,11 +13,12 @@ def train(Y, Yt, d = 10, h = 5, max_iter = 100):
     for u in Yt:
         S[u] = np.random.randn(h,1) #random normal h x 1
 
-    #F = {}
-    #for i in Y:
-    #    F[i] = random normal d x h
+    F = {}
+    for i in Y:
+        F[i] = np.random.randn(d,1)
 
     for ep in range(max_iter):
+        print('ep ' + str(ep))
         nextF = solveF(Y, S)
         F = nextF
 
@@ -42,6 +43,9 @@ def solveF(Y, S):
         Si = Sit
         Yi = Yit
 
+        #print(i)
+        #print(Si.shape)
+        #print(Yi.shape)
         Fi = mx(mx( Yi, np.transpose(Si)), np.linalg.inv(mx(Si, np.transpose(Si)))) #needs to use matmul i believe
 
         F[i] = Fi
@@ -49,16 +53,22 @@ def solveF(Y, S):
     return F
 
 def solveS(Yt, F):
-    d = F[F.keys()[0]].shape[1]
-
+    h = F[F.keys()[0]].shape[1]
+    #print('d = ' + str(d))
+    
     S = {}
     
     for u in Yt:
-        Su = np.zeros((d,1))
+        Su = np.zeros((h,1))
         Isize = 0
 
         for i in Yt[u]:
-            Su = Su + mx(mx(np.linalg.inv(mx(np.transpose(F[i]), F[i])), np.transpose(F[i])), Yt[u][i])
+            tv = mx(np.transpose(F[i]), F[i])
+            tv = np.linalg.inv(tv)
+            tv = mx(tv, np.transpose(F[i]))
+            tv = mx(tv, Yt[u][i])
+            Su = Su + tv
+            #Su = Su + mx(mx(np.linalg.inv(mx(np.transpose(F[i]), F[i])), np.transpose(F[i])), Yt[u][i])
             Isize += 1
 
         Su = Su / Isize
@@ -99,7 +109,7 @@ def train_basic(Y, Yt, d=10, h=5, max_iter = 1000):
     momentum = 0
     SSD_old = ss_err(Y, F, S)
 
-    for ep in range(10000):
+    for ep in range(max_iter):
         tscale = scale + dscale
 
         SSD = ss_err(Y, F, S, tscale)
