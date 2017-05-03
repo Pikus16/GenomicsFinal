@@ -4,6 +4,7 @@ import gzip
 
 
 def loadSNPs(filename):
+    print('loading: ' + filename)
     f = open(filename, 'r')
 
     line = f.readline()
