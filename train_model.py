@@ -18,7 +18,7 @@ def train(Y, Yt, d = 10, h = 5, max_iter = 100):
         F[i] = np.random.randn(d,1)
 
     for ep in range(max_iter):
-        print('ep ' + str(ep))
+        #print('ep ' + str(ep))
         nextF = solveF(Y, S)
         F = nextF
 
@@ -177,7 +177,7 @@ def main():
     pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_'+str(h))'''
 
     
-    x = range(15,30)
+    x = range(0,15)
     for h in x:
         try:
             F, S = train(Y, Yt, 10, h)
@@ -191,8 +191,8 @@ def main():
 
             pwrite(F_basic, S_basic, sys.argv[2]+'basic_model/basic_model_10_'+str(h))
             pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized/basic_randomized_10_'+str(h)) 
-        except:
-            print(h)
+        except LinAlgError:
+            print('Singular matrix: ' + str(h))
     
 if __name__ == '__main__':
     main()
