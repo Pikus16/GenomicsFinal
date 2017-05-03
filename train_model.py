@@ -2,6 +2,7 @@ import numpy as np
 from numpy import matmul as mx
 import pca
 from input_output import *
+import sys
 
 
 
@@ -135,7 +136,9 @@ def main():
         exit()
         
     Y, Yt = pca.run_pca()
+    print('got data')
     Z, Zt = randomize_data(Y, Yt)
+
     
     F, S = train(Y, Yt, 10, 5)
     FZ, SZ = train(Z, Zt, 10, 5)
