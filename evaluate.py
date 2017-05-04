@@ -190,6 +190,7 @@ def main():
     f = open(out_dir + 'results.txt', 'wb')
     f.write(r)
     f.close()
+    print("Now drawing plots ....")
     plot_tissue_pca()
 
 if __name__ == '__main__':
