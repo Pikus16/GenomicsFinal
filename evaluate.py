@@ -188,9 +188,9 @@ def main():
     r += ('\nPercent Variance compared to centroid method: ' + str(100*v))
     print(r)
     f = open(out_dir + 'results.txt', 'wb')
-    #plot_tissue_pca()
     f.write(r)
     f.close()
+    plot_tissue_pca()
 
 if __name__ == '__main__':
     main()
