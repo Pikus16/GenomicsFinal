@@ -3,6 +3,7 @@ from read_data import *
 from train_model import * 
 from pre_proc import *
 
+out_dir = sys.argv[2] + '/'
 def BIC_eval(Y, F, S, d = 10, h = 5):
     n = len(S)
     k = (n-1) * h
@@ -187,6 +188,7 @@ def main():
     r += ('\nPercent Variance compared to centroid method: ' + str(100*v))
     print(r)
     f = open(out_dir + 'results.txt', 'wb')
+    #plot_tissue_pca()
     f.write(r)
     f.close()
 

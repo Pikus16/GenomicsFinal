@@ -6,6 +6,7 @@ import sys
 from evaluate import *
 import os
 
+out_dir = sys.argv[2] + '/'
 def train(Y, Yt, d = 10, h = 5, max_iter = 100):
     
     S = {}
@@ -103,7 +104,7 @@ def randomize_data(Y, Yt):
                 d = Y[i][u].shape[0]
                 Z[i][u] = sigma*np.random.randn(d,1)
                 Zt[u][i] = Z[i][u]
-
+        ywrite(Z, Zt, out_dir+'pickled/tdat/random1')
     return (Z, Zt)
 
 def train_basic(Y, Yt, d=10, h=5, max_iter = 1000):

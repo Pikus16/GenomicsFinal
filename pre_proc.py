@@ -1,7 +1,7 @@
 from pca import *
 import sys
-dat_dir = '../../dat/'
-out_dir = 'output/'
+dat_dir = sys.argv[1] + '/'#'../../dat/'
+out_dir = sys.argv[2] + '/'#'output/'
 def main():
     if len(sys.argv) <= 2:
         print("not enough command arguments")
