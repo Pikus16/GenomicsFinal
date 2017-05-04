@@ -6,8 +6,10 @@ from pre_proc import *
 from general import *
 import os
 from input_output import *
-
+import sys
+out_dir = sys.argv[2] + '/'
 def run_pca(d = 10): 
+    tiss_nam = out_dir + 'pickled/dat'
     try:
         y, yt = yread(tiss_nam)
         return y, yt
@@ -28,7 +30,6 @@ def run_pca(d = 10):
         ywrite(Y, Yt, tiss_nam)
         return Y, Yt
 
-tiss_nam = 'pickled/dat'
 def pca_tiss(X, samples, d = 10):
     pca = decomposition.PCA(n_components=d)
     pca.fit(X)
@@ -43,6 +44,7 @@ import matplotlib.pyplot as plt
 
 
 def get_tissues(d= 10):
+    tiss_nam = out_dir + 'pickled/dat'
     try:
         tissues = read_tiss(tiss_nam)
         return tissues
@@ -126,6 +128,6 @@ def plot_specific(s, tissues):
             plt.savefig(out_dir + 'plots/' + tle + '/' + tle_i + '.png')
             plt.close(i)
     return 
-    
-    
+  
+
 

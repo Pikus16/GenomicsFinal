@@ -29,16 +29,16 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 def plot_ss():
-    bm = [f for f in os.listdir('pickled/models/basic_model/')]
+    bm = [f for f in os.listdir(out_dir+'pickled/models/basic_model/')]
     bm_files = np.sort(bm)
     Y, Yt = pca.run_pca()
-    Z, Zt = yread('pickled/tdat/random1') 
+    Z, Zt = yread(out_dir+'pickled/tdat/random1') 
     h = []
     ss_bm = []
     for g in range(0, len(bm_files), 2):
         f = (bm_files[g].split('.')[0])
         if ( (int) (f.split('_')[3]) < 10):
-            F, S =pread('pickled/models/basic_model/' + f)
+            F, S =pread(out_dir+'pickled/models/basic_model/' + f)
             h.append(f.split('_')[3])
             ss_bm.append(ss_err(Y, F, S))
     h = np.asarray(h, int)
@@ -56,29 +56,29 @@ def plot_ss():
         f = (tr_files[g].split('.')[0]) 
         F, S =pread('results/total_randomized/' + f)
         ss_tr.append(ss_err(Y, F, S))'''
-    br = [f for f in os.listdir('pickled/tdat/basic_random/')]
+    br = [f for f in os.listdir(out_dir+'pickled/tdat/basic_random/')]
     br_files = np.sort(br)
     ss_br = []
     for g in range(0, len(br_files), 2):
         f = (br_files[g].split('.')[0])
         if ((int)(f.split('_')[3]) < 10):
-            F, S =pread('pickled/tdat/basic_random/' + f)
+            F, S =pread(out_dir+'pickled/tdat/basic_random/' + f)
             ss_br.append(ss_err(Z, F, S))
-    tr = [f for f in os.listdir('pickled/tdat/total_random/')]
+    tr = [f for f in os.listdir(out_dir+'pickled/tdat/total_random/')]
     tr_files = np.sort(tr)
     ss_tr = []
     for g in range(0, len(tr_files), 2):
         f = (tr_files[g].split('.')[0])
         if ((int)(f.split('_')[3]) < 10):
-            F, S =pread('pickled/tdat/total_random/' + f)
+            F, S =pread(out_dir+'pickled/tdat/total_random/' + f)
             ss_tr.append(ss_err(Z, F, S))
-    tm = [f for f in os.listdir('pickled/models/total_model/')]
+    tm = [f for f in os.listdir(out_dir+'pickled/models/total_model/')]
     tm_files = np.sort(tm)
     ss_tm = []
     for g in range(0, len(tm_files), 2):
         f = (tm_files[g].split('.')[0]) 
         if ( (int) (f.split('_')[3]) < 10):
-            F, S =pread('pickled/models/total_model/' + f)
+            F, S =pread(out_dir+'pickled/models/total_model/' + f)
             ss_tm.append(ss_err(Y, F, S))
             #print(f.split('_')[3] + "  " + str(ss_err(Y,F,S)))
     plt.figure(1)
@@ -104,7 +104,7 @@ def plot_ss():
     return ss_tm
 
 def plot_bic():
-    bm = [f for f in os.listdir('pickled/models/basic_model/')]
+    bm = [f for f in os.listdir(out_dir+'pickled/models/basic_model/')]
     bm_files = np.sort(bm)
     Y, Yt = pca.run_pca()
     h = []
@@ -112,7 +112,7 @@ def plot_bic():
     for g in range(0, len(bm_files), 2):
         f = (bm_files[g].split('.')[0]) 
         if ( (int) (f.split('_')[3]) < 10):    
-            F, S =pread('pickled/models/basic_model/' + f)
+            F, S =pread(out_dir+'pickled/models/basic_model/' + f)
             h.append(f.split('_')[3])
             bic_bm.append(BIC_eval(Y, F, S, 10, (int) (f.split('_')[3])))
     h = np.asarray(h, int)
@@ -132,13 +132,13 @@ def plot_bic():
         if ( (int) (f.split('_')[3]) < 12):
             F, S =pread('results/total_randomized/' + f)
             bic_tr.append(BIC_eval(Y, F, S))#, 10, (int) (f.split('_')[3])))'''
-    tm = [f for f in os.listdir('pickled/models/total_model/')]
+    tm = [f for f in os.listdir(out_dir+'pickled/models/total_model/')]
     tm_files = np.sort(tm)
     bic_tm = []
     for g in range(0, len(tm_files), 2):
         f = (tm_files[g].split('.')[0]) 
         if ( (int) (f.split('_')[3]) < 10):
-            F, S =pread('pickled/models/total_model/' + f)
+            F, S =pread(out_dir+'pickled/models/total_model/' + f)
             bic_tm.append(BIC_eval(Y, F, S, 10, (int) (f.split('_')[3])))
     #rand = [f for f in os.listdir('results/total_model/')]
     ## Plot
@@ -161,14 +161,18 @@ def plot_bic():
     #return min(enumeratec(bic_tm), key=itemgetter(1))[0] 
 
 def train_random():
-    Y, Yt = yread('pickled/tdat/random1')
+    Y, Yt = yread(out_dir+'pickled/tdat/random1')
     x = range(0,10)
     for h in x:
-        F, S = train(Y, Yt, 10, h)
-        F_b, S_b = train_basic(Y, Yt, 10, h)
+        try:
+            a = pread(out_dir+'pickled/tdat/total_random/total_model_10_' + str(h))
+            b = pread(out_dir+'pickled/tdat/basic_random/basic_model_10_' + str(h))
+        except:
+            F, S = train(Y, Yt, 10, h)
+            F_b, S_b = train_basic(Y, Yt, 10, h)
 
-        pwrite(F, S, 'pickled/tdat/total_random/total_model_10_' + str(h))
-        pwrite(F_b, S_b, 'pickled/tdat/basic_random/basic_model_10_' + str(h))
+            pwrite(F, S, out_dir+'pickled/tdat/total_random/total_model_10_' + str(h))
+            pwrite(F_b, S_b, out_dir+'pickled/tdat/basic_random/basic_model_10_' + str(h))
 
 def varian(arr, j):
     return (arr[0] - arr[j])/arr[0]

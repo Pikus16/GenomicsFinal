@@ -87,7 +87,7 @@ def solveS(Yt, F):
 
 def randomize_data(Y, Yt):
     try:
-        Z, Zt = yread('pickled/tdat/random1')
+        Z, Zt = yread(out_dir+'pickled/tdat/random1')
     except:
         sigma = calc_std(Y)
     
@@ -187,26 +187,26 @@ def main():
     pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_'+str(h))'''
 
      
-    x = range(0,9)
+    x = range(0,10)
     for h in x:
         try:
-            a = pread('pickled/models/total_model/total_model_10_' + str(h))
-            #b = pread( 'pickled/models/total_randomized/total_randomized_10_' + str(h))
-            c = pread('pickled/models/basic_model/basic_model_10_'+str(h))
-            #d = pread( 'pickled/models/basic_randomized/basic_randomized_10_'+str(h))
+            a = pread(out_dir+'pickled/models/total_model/total_model_10_' + str(h))
+            #b = pread( out_dir+'pickled/models/total_randomized/total_randomized_10_' + str(h))
+            c = pread(out_dir+'pickled/models/basic_model/basic_model_10_'+str(h))
+            #d = pread( out_dir+'pickled/models/basic_randomized/basic_randomized_10_'+str(h))
         except:
             try:
                 F, S = train(Y, Yt, 10, h)
                 #FZ, SZ = train(Z, Zt, 10, h)
 
-                pwrite(F, S, 'pickled/models/total_model/total_model_10_' + str(h))
-                #pwrite(FZ, SZ, 'pickled/models/total_randomized/total_randomized_10_' + str(h))
+                pwrite(F, S, out_dir+'pickled/models/total_model/total_model_10_' + str(h))
+                #pwrite(FZ, SZ, out_dir+'pickled/models/total_randomized/total_randomized_10_' + str(h))
 
                 F_basic, S_basic = train_basic(Y, Yt, 10, h)
                 #FZ_basic, SZ_basic = train_basic(Z, Zt, 10, h)
 
-                pwrite(F_basic, S_basic, 'pickled/models/basic_model/basic_model_10_'+str(h))
-                #pwrite(FZ_basic, SZ_basic, 'pickled/models/basic_randomized/basic_randomized_10_'+str(h)) 
+                pwrite(F_basic, S_basic, out_dir+'pickled/models/basic_model/basic_model_10_'+str(h))
+                #pwrite(FZ_basic, SZ_basic, out_dir+'pickled/models/basic_randomized/basic_randomized_10_'+str(h)) 
             except:
                 print('Singular matrix: ' + str(h))
 
