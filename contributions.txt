@@ -1,0 +1,17 @@
+Members: Derek, Ben
+
+Below, all credits are given to the primary contributor for each topic, but every major component of the project was at least checked by each of us.
+
+
+Derek's contributions:
+	Downloading data
+	Designed our model and training algorithm
+	Implemented training algorithm
+	Writeup
+	Presentation Slides
+
+Ben's contributions:
+      Parse data
+      Created the plots where we colored patients
+      All the evaluation implementation
+      Formatted submission to be as required
