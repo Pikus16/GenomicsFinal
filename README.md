@@ -35,4 +35,5 @@ Expected Output Files:
 	 results.txt
 		final output: best h value, SSD with that h, %variance explained
 
-Please find the slides and the writeup also included.
+Please find the slides and the writeup also included. Currently, all the models are pickled for faster results. 
+If you woud like to see the training done, rm the folder models in $results/picked.
