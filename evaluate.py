@@ -1,6 +1,7 @@
 import numpy as np
 from read_data import *
 from train_model import * 
+from pre_proc import *
 
 def BIC_eval(Y, F, S, d = 10, h = 5):
     n = len(S)
@@ -28,16 +29,16 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 def plot_ss():
-    bm = [f for f in os.listdir('results/basic_model/')]
+    bm = [f for f in os.listdir('pickled/models/basic_model/')]
     bm_files = np.sort(bm)
     Y, Yt = pca.run_pca()
-    Z, Zt = yread('tdat/random1') 
+    Z, Zt = yread('pickled/tdat/random1') 
     h = []
     ss_bm = []
     for g in range(0, len(bm_files), 2):
         f = (bm_files[g].split('.')[0])
         if ( (int) (f.split('_')[3]) < 10):
-            F, S =pread('results/basic_model/' + f)
+            F, S =pread('pickled/models/basic_model/' + f)
             h.append(f.split('_')[3])
             ss_bm.append(ss_err(Y, F, S))
     h = np.asarray(h, int)
@@ -55,38 +56,42 @@ def plot_ss():
         f = (tr_files[g].split('.')[0]) 
         F, S =pread('results/total_randomized/' + f)
         ss_tr.append(ss_err(Y, F, S))'''
-    br = [f for f in os.listdir('tdat/basic_random/')]
+    br = [f for f in os.listdir('pickled/tdat/basic_random/')]
     br_files = np.sort(br)
     ss_br = []
     for g in range(0, len(br_files), 2):
         f = (br_files[g].split('.')[0])
         if ((int)(f.split('_')[3]) < 10):
-            F, S =pread('tdat/basic_random/' + f)
+            F, S =pread('pickled/tdat/basic_random/' + f)
             ss_br.append(ss_err(Z, F, S))
-    tr = [f for f in os.listdir('tdat/total_random/')]
+    tr = [f for f in os.listdir('pickled/tdat/total_random/')]
     tr_files = np.sort(tr)
     ss_tr = []
     for g in range(0, len(tr_files), 2):
         f = (tr_files[g].split('.')[0])
         if ((int)(f.split('_')[3]) < 10):
-            F, S =pread('tdat/total_random/' + f)
+            F, S =pread('pickled/tdat/total_random/' + f)
             ss_tr.append(ss_err(Z, F, S))
-    tm = [f for f in os.listdir('results/total_model/')]
+    tm = [f for f in os.listdir('pickled/models/total_model/')]
     tm_files = np.sort(tm)
     ss_tm = []
     for g in range(0, len(tm_files), 2):
         f = (tm_files[g].split('.')[0]) 
         if ( (int) (f.split('_')[3]) < 10):
-            F, S =pread('results/total_model/' + f)
+            F, S =pread('pickled/models/total_model/' + f)
             ss_tm.append(ss_err(Y, F, S))
             #print(f.split('_')[3] + "  " + str(ss_err(Y,F,S)))
     plt.figure(1)
     #plt.ylim((-100,np.nanmax(np.hstack((ss_tm,ss_tr,ss_bm,ss_br)))))
     plt.xlim(0, np.nanmax(h))
-    plt.scatter(h,ss_tm, color = 'red', label = 'Total Model')
-    plt.scatter(h,ss_tr, color = 'blue', label = 'Total Randomized')
-    plt.scatter(h,ss_bm, color = 'green', label = 'Basic Model')
-    plt.scatter(h,ss_br, color = 'black', label = 'Basic Randomized')
+    plt.plot(h,ss_tm, color = 'red', label = 'Total Model')
+    plt.plot(h,ss_tr, color = 'blue', label = 'Total Randomized')
+    plt.plot(h,ss_bm, color = 'green', label = 'Basic Model')
+    plt.plot(h,ss_br, color = 'black', label = 'Basic Randomized')
+    plt.scatter(h,ss_tm, color = 'red')
+    plt.scatter(h,ss_tr, color = 'blue')
+    plt.scatter(h,ss_bm, color = 'green')
+    plt.scatter(h,ss_br, color = 'black')
     plt.title('SSD vs H')
     plt.xlabel('h values')
     plt.ylabel('SSD Scores')
@@ -94,11 +99,12 @@ def plot_ss():
     plt.ylim(m * .5, m * 4.0)
     plt.xlim(0, np.nanmax(h))
     plt.legend(loc='best', shadow=False, scatterpoints=1)
-    plt.savefig('SSD_Scores.png')
+    plt.savefig(out_dir + 'SSD_Scores.png')
     plt.close(1)
+    return ss_tm
 
 def plot_bic():
-    bm = [f for f in os.listdir('results/basic_model/')]
+    bm = [f for f in os.listdir('pickled/models/basic_model/')]
     bm_files = np.sort(bm)
     Y, Yt = pca.run_pca()
     h = []
@@ -106,7 +112,7 @@ def plot_bic():
     for g in range(0, len(bm_files), 2):
         f = (bm_files[g].split('.')[0]) 
         if ( (int) (f.split('_')[3]) < 10):    
-            F, S =pread('results/basic_model/' + f)
+            F, S =pread('pickled/models/basic_model/' + f)
             h.append(f.split('_')[3])
             bic_bm.append(BIC_eval(Y, F, S, 10, (int) (f.split('_')[3])))
     h = np.asarray(h, int)
@@ -126,13 +132,13 @@ def plot_bic():
         if ( (int) (f.split('_')[3]) < 12):
             F, S =pread('results/total_randomized/' + f)
             bic_tr.append(BIC_eval(Y, F, S))#, 10, (int) (f.split('_')[3])))'''
-    tm = [f for f in os.listdir('results/total_model/')]
+    tm = [f for f in os.listdir('pickled/models/total_model/')]
     tm_files = np.sort(tm)
     bic_tm = []
     for g in range(0, len(tm_files), 2):
         f = (tm_files[g].split('.')[0]) 
         if ( (int) (f.split('_')[3]) < 10):
-            F, S =pread('results/total_model/' + f)
+            F, S =pread('pickled/models/total_model/' + f)
             bic_tm.append(BIC_eval(Y, F, S, 10, (int) (f.split('_')[3])))
     #rand = [f for f in os.listdir('results/total_model/')]
     ## Plot
@@ -140,24 +146,45 @@ def plot_bic():
     #m = np.nanmin(np.hstack((bic_tm,bic_bm,bic_br, bic_tr)))
     #plt.ylim(m * .95, m * 1.05)
     plt.xlim(0, np.nanmax(h))
-    plt.scatter(h,bic_tm, color = 'red', label = 'Total Model')
-    #plt.scatter(h,bic_tr, color = 'blue', label = 'Total Randomized')
-    #plt.scatter(h,bic_bm, color = 'green', label = 'Basic Model')
-    #plt.scatter(h,bic_br, color = 'black', label = 'Basic Randomized')
+    plt.plot(h,bic_tm, color = 'red', label = 'Total Model') 
+    #plt.plot(h,bic_tr, color = 'blue', label = 'Total Randomized')
+    #plt.plot(h,bic_bm, color = 'green', label = 'Basic Model')
+    #plt.plot(h,bic_br, color = 'black', label = 'Basic Randomized')
     plt.title('BIC vs H')
     plt.xlabel('h values')
     plt.ylabel('BIC Scores')
     plt.legend(loc='best', shadow=False, scatterpoints=1)
-    plt.savefig('BIC_Scores.png')
+    plt.scatter(h,bic_tm, color = 'red')
+    plt.savefig(out_dir + 'BIC_Scores.png')
     plt.close(2)
+    return bic_tm.index(min(bic_tm))
+    #return min(enumeratec(bic_tm), key=itemgetter(1))[0] 
 
 def train_random():
-    Y, Yt = yread('tdat/random1')
+    Y, Yt = yread('pickled/tdat/random1')
     x = range(0,10)
     for h in x:
         F, S = train(Y, Yt, 10, h)
         F_b, S_b = train_basic(Y, Yt, 10, h)
 
-        pwrite(F, S, 'tdat/total_random/total_model_10_' + str(h))
-        pwrite(F_b, S_b, 'tdat/basic_random/basic_model_10_' + str(h))
+        pwrite(F, S, 'pickled/tdat/total_random/total_model_10_' + str(h))
+        pwrite(F_b, S_b, 'pickled/tdat/basic_random/basic_model_10_' + str(h))
 
+def varian(arr, j):
+    return (arr[0] - arr[j])/arr[0]
+
+def main():
+    #train_random()
+    j = plot_bic()
+    ss = plot_ss()
+    v = varian(ss, j)
+    r = ('H with lowest BIC: ' + str(j))
+    r += ('\nSSD for trained model on lowest BIC: ' + str(ss[j]))
+    r += ('\nPercent Variance compared to centroid method: ' + str(100*v))
+    print(r)
+    f = open(out_dir + 'results.txt', 'wb')
+    f.write(r)
+    f.close()
+
+if __name__ == '__main__':
+    main()

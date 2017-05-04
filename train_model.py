@@ -7,7 +7,6 @@ from evaluate import *
 import os
 
 def train(Y, Yt, d = 10, h = 5, max_iter = 100):
-    #get Y,Yt from Benny's code
     
     S = {}
     for u in Yt:
@@ -87,20 +86,23 @@ def solveS(Yt, F):
         
 
 def randomize_data(Y, Yt):
-    sigma = calc_std(Y)
+    try:
+        Z, Zt = yread('pickled/tdat/random1')
+    except:
+        sigma = calc_std(Y)
     
-    Z = {}
-    Zt = {}
-    for i in Y:
-        for u in Y[i]:
-            if i not in Z:
-                Z[i] = {}
-            if u not in Zt:
-                Zt[u] = {}
+        Z = {}
+        Zt = {}
+        for i in Y:
+            for u in Y[i]:
+                if i not in Z:
+                    Z[i] = {}
+                if u not in Zt:
+                    Zt[u] = {}
 
-            d = Y[i][u].shape[0]
-            Z[i][u] = sigma*np.random.randn(d,1)
-            Zt[u][i] = Z[i][u]
+                d = Y[i][u].shape[0]
+                Z[i][u] = sigma*np.random.randn(d,1)
+                Zt[u][i] = Z[i][u]
 
     return (Z, Zt)
 
@@ -168,7 +170,7 @@ def main():
         exit()
         
     Y, Yt = pca.run_pca()
-    print('got data')
+    #print('got data')
     Z, Zt = randomize_data(Y, Yt)
 
     '''h = 5
@@ -184,23 +186,30 @@ def main():
     pwrite(F_basic, S_basic, sys.argv[2]+'basic_model_10_'+str(h))
     pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized_10_'+str(h))'''
 
-    
-    x = range(1,15)
+     
+    x = range(0,9)
     for h in x:
         try:
-            F, S = train(Y, Yt, 10, h)
-            FZ, SZ = train(Z, Zt, 10, h)
+            a = pread('pickled/models/total_model/total_model_10_' + str(h))
+            #b = pread( 'pickled/models/total_randomized/total_randomized_10_' + str(h))
+            c = pread('pickled/models/basic_model/basic_model_10_'+str(h))
+            #d = pread( 'pickled/models/basic_randomized/basic_randomized_10_'+str(h))
+        except:
+            try:
+                F, S = train(Y, Yt, 10, h)
+                #FZ, SZ = train(Z, Zt, 10, h)
 
-            pwrite(F, S, sys.argv[2]+'total_model/total_model_10_' + str(h))
-            pwrite(FZ, SZ, sys.argv[2]+'total_randomized/total_randomized_10_' + str(h))
+                pwrite(F, S, 'pickled/models/total_model/total_model_10_' + str(h))
+                #pwrite(FZ, SZ, 'pickled/models/total_randomized/total_randomized_10_' + str(h))
 
-            F_basic, S_basic = train_basic(Y, Yt, 10, h)
-            FZ_basic, SZ_basic = train_basic(Z, Zt, 10, h)
+                F_basic, S_basic = train_basic(Y, Yt, 10, h)
+                #FZ_basic, SZ_basic = train_basic(Z, Zt, 10, h)
 
-            pwrite(F_basic, S_basic, sys.argv[2]+'basic_model/basic_model_10_'+str(h))
-            pwrite(FZ_basic, SZ_basic, sys.argv[2]+'basic_randomized/basic_randomized_10_'+str(h)) 
-        except LinAlgError:
-            print('Singular matrix: ' + str(h))
-    
+                pwrite(F_basic, S_basic, 'pickled/models/basic_model/basic_model_10_'+str(h))
+                #pwrite(FZ_basic, SZ_basic, 'pickled/models/basic_randomized/basic_randomized_10_'+str(h)) 
+            except:
+                print('Singular matrix: ' + str(h))
+
+    train_random()
 if __name__ == '__main__':
     main()

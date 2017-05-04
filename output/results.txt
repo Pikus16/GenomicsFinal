@@ -1,0 +1,3 @@
+H with lowest BIC: 5
+SSD for trained model on lowest BIC: [ 241.32994043]
+Percent Variance compared to centroid method: [ 29.02060576]

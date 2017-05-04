@@ -1,1 +1,1 @@
-python evaluate.py
+python evaluate.py $1 $2

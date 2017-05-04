@@ -2,6 +2,7 @@
 from sklearn import decomposition
 import numpy as np
 from read_data import *
+from pre_proc import *
 from general import *
 import os
 from input_output import *
@@ -27,7 +28,7 @@ def run_pca(d = 10):
         ywrite(Y, Yt, tiss_nam)
         return Y, Yt
 
-tiss_nam = 'dat'
+tiss_nam = 'pickled/dat'
 def pca_tiss(X, samples, d = 10):
     pca = decomposition.PCA(n_components=d)
     pca.fit(X)
@@ -95,11 +96,11 @@ def plot_specific(s, tissues):
     tle = tle[0:(len(tle)-9)]
     tle_s = tle + "_vs._" + tle
     plt.title(tle_s)#str(tissues.keys()[s]))
-    if (not os.path.isdir('plots/' + tle + '/' )):
-        os.makedirs('plots/' + tle + '/')
+    if (not os.path.isdir(out_dir + 'plots/' + tle + '/' )):
+        os.makedirs(out_dir + 'plots/' + tle + '/')
     plt.xlabel("PCA 1")
     plt.ylabel("PCA_2")
-    plt.savefig('plots/' + tle + '/' + tle_s + '.png')
+    plt.savefig(out_dir + 'plots/' + tle + '/' + tle_s + '.png')
     plt.close(s)
     for i in range(0, len(tissues)):
         if (i != s):
@@ -122,7 +123,7 @@ def plot_specific(s, tissues):
             plt.title(tle_i)#str(tissues.keys()[i]))
             plt.xlabel("PCA 1")
             plt.ylabel("PCA_2")
-            plt.savefig('plots/' + tle + '/' + tle_i + '.png')
+            plt.savefig(out_dir + 'plots/' + tle + '/' + tle_i + '.png')
             plt.close(i)
     return 
     
